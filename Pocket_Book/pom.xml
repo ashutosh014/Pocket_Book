@@ -17,6 +17,7 @@
 
   <modules>
     <module>User-Service</module>
+    <module>Book-Service</module>
     <!--Place your child service here-->
   </modules>
 
