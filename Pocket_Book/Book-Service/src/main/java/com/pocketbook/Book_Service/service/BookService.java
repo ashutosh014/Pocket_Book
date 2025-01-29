@@ -2,7 +2,6 @@ package com.pocketbook.Book_Service.service;
 
 import com.pocketbook.Book_Service.model.Book;
 import com.pocketbook.Book_Service.repository.BookRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,8 +9,12 @@ import java.util.Optional;
 
 @Service
 public class BookService {
-    @Autowired
-    private BookRepository bookRepository;
+
+    private  final BookRepository bookRepository;
+
+    public BookService(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+    }
 
     public List<Book> getAllBooks() {
         return bookRepository.findAll();
@@ -28,8 +31,8 @@ public class BookService {
         return bookRepository.findByAuthorName(authorName);
     }
 
-    public Optional<Book> searchBookByJoner(String joner) {
-        return bookRepository.findByJoner(joner);
+    public Optional<Book> searchBookByGenre(String genre) {
+        return bookRepository.findByGenre(genre);
     }
 
     public Book saveBook(Book book) {

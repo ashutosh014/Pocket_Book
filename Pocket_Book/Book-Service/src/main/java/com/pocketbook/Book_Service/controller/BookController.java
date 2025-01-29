@@ -1,11 +1,7 @@
 package com.pocketbook.Book_Service.controller;
 
-
-
-
 import com.pocketbook.Book_Service.model.Book;
 import com.pocketbook.Book_Service.service.BookService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,8 +11,11 @@ import java.util.List;
 @RequestMapping("/api/books")
 public class BookController {
 
-    @Autowired
-    private BookService bookService;
+    private final BookService bookService;
+
+    public BookController(BookService bookService) {
+        this.bookService = bookService;
+    }
 
     @GetMapping
     public ResponseEntity<List<Book>> getAllBooks() {
@@ -39,7 +38,7 @@ public class BookController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Book> updateBook(@PathVariable Long id, @RequestBody Book book) {
-        if (!bookService.searchBookById(id).isPresent()) {
+        if (bookService.searchBookById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         book.setId(id);
@@ -49,7 +48,7 @@ public class BookController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
-        if (!bookService.searchBookById(id).isPresent()) {
+        if (bookService.searchBookById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         bookService.deleteBook(id);

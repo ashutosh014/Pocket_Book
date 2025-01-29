@@ -4,8 +4,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.Builder;
 
 @Entity
+@Builder
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,15 +15,15 @@ public class Book {
     private String title;
     private String authorName;
     private double price;
-    private String joner;
+    private String genre;
     private String user_id;
 
     // Getters and setters
 
-    public Book(Long id, String user_id, String joner, double price, String authorName, String title) {
+    public Book(Long id, String user_id, String genre, double price, String authorName, String title) {
         this.id = id;
         this.user_id = user_id;
-        this.joner = joner;
+        this.genre = genre;
         this.price = price;
         this.authorName = authorName;
         this.title = title;
@@ -51,12 +53,12 @@ public class Book {
         this.price = price;
     }
 
-    public String getJoner() {
-        return joner;
+    public String getGenre() {
+        return genre;
     }
 
-    public void setJoner(String joner) {
-        this.joner = joner;
+    public void setGenre(String genre) {
+        this.genre = genre;
     }
 
     public String getUser_id() {
