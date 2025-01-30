@@ -6,6 +6,7 @@ package com.pocketbook.Book_Service.controller;
 import com.pocketbook.Book_Service.model.Book;
 import com.pocketbook.Book_Service.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,8 +16,12 @@ import java.util.List;
 @RequestMapping("/api/books")
 public class BookController {
 
-    @Autowired
+   @Autowired
     private BookService bookService;
+
+    public BookController(BookService bookService) {
+        this.bookService = bookService;
+    }
 
     @GetMapping
     public ResponseEntity<List<Book>> getAllBooks() {
@@ -31,9 +36,24 @@ public class BookController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/{title}/availability")
+    public ResponseEntity<Boolean> isBookAvailable(@PathVariable String title) {
+        boolean available = bookService.isBookAvailable(title);
+        return ResponseEntity.ok(available);
+    }
+
+  @PutMapping("/{title}/booked")
+  public ResponseEntity<String> titleBooking(@PathVariable String title){
+       return ResponseEntity.ok(bookService.bookTitle(title));
+
+  }
+
     @PostMapping
-    public ResponseEntity<Book> createBook(@RequestBody Book book) {
+    public ResponseEntity<?> createBook(@RequestBody Book book) {
         Book savedBook = bookService.saveBook(book);
+        if (savedBook == null) {
+            return new ResponseEntity<>("Book is already available", HttpStatus.NOT_FOUND);
+        }
         return ResponseEntity.ok(savedBook);
     }
 
